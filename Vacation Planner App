@@ -1,0 +1,436 @@
+import javafx.application.Application;
+import javafx.scene.Scene;
+import javafx.scene.control.*;
+import javafx.scene.layout.GridPane;
+import javafx.stage.Stage;
+
+import java.util.Date;
+
+public class VacationPlannerApp extends Application {
+
+    private TextField nameField, emailField, passwordField, phoneNumberField, profilePictureField;
+    private TextField destinationField, startDateField, endDateField, budgetField;
+    private TextField itineraryActivityField, itineraryLocationField, itineraryDateField, itineraryTimeField, itineraryDurationField, itineraryNotesField;
+
+    public static void main(String[] args) {
+        launch(args);
+    }
+
+    @Override
+    public void start(Stage primaryStage) {
+        primaryStage.setTitle("Vacation Planner App");
+
+        // Main layout
+        TabPane tabPane = new TabPane();
+
+        // User Tab
+        Tab userTab = new Tab("Create User", createUserForm());
+        tabPane.getTabs().add(userTab);
+
+        // Trip Tab
+        Tab tripTab = new Tab("Create Trip", createTripForm());
+        tabPane.getTabs().add(tripTab);
+
+        // Itinerary Tab
+        Tab itineraryTab = new Tab("Create Itinerary", createItineraryForm());
+        tabPane.getTabs().add(itineraryTab);
+
+        // Main Scene
+        Scene scene = new Scene(tabPane, 600, 400);
+        primaryStage.setScene(scene);
+        primaryStage.show();
+    }
+
+    private GridPane createUserForm() {
+        GridPane grid = new GridPane();
+
+        // Form fields
+        nameField = new TextField();
+        emailField = new TextField();
+        passwordField = new PasswordField();
+        phoneNumberField = new TextField();
+        profilePictureField = new TextField();
+
+        // Add form fields to grid
+        grid.add(new Label("Name:"), 0, 0);
+        grid.add(nameField, 1, 0);
+        grid.add(new Label("Email:"), 0, 1);
+        grid.add(emailField, 1, 1);
+        grid.add(new Label("Password:"), 0, 2);
+        grid.add(passwordField, 1, 2);
+        grid.add(new Label("Phone Number:"), 0, 3);
+        grid.add(phoneNumberField, 1, 3);
+        grid.add(new Label("Profile Picture URL:"), 0, 4);
+        grid.add(profilePictureField, 1, 4);
+
+        // Submit button
+        Button submitButton = new Button("Create User");
+        submitButton.setOnAction(e -> handleCreateUser());
+        grid.add(submitButton, 1, 5);
+
+        return grid;
+    }
+
+    private GridPane createTripForm() {
+        GridPane grid = new GridPane();
+
+        // Form fields
+        destinationField = new TextField();
+        startDateField = new TextField();
+        endDateField = new TextField();
+        budgetField = new TextField();
+
+        // Add form fields to grid
+        grid.add(new Label("Destination:"), 0, 0);
+        grid.add(destinationField, 1, 0);
+        grid.add(new Label("Start Date (YYYY-MM-DD):"), 0, 1);
+        grid.add(startDateField, 1, 1);
+        grid.add(new Label("End Date (YYYY-MM-DD):"), 0, 2);
+        grid.add(endDateField, 1, 2);
+        grid.add(new Label("Budget:"), 0, 3);
+        grid.add(budgetField, 1, 3);
+
+        // Submit button
+        Button submitButton = new Button("Create Trip");
+        submitButton.setOnAction(e -> handleCreateTrip());
+        grid.add(submitButton, 1, 4);
+
+        return grid;
+    }
+
+    private GridPane createItineraryForm() {
+        GridPane grid = new GridPane();
+
+        // Form fields
+        itineraryActivityField = new TextField();
+        itineraryLocationField = new TextField();
+        itineraryDateField = new TextField();
+        itineraryTimeField = new TextField();
+        itineraryDurationField = new TextField();
+        itineraryNotesField = new TextField();
+
+        // Add form fields to grid
+        grid.add(new Label("Activity:"), 0, 0);
+        grid.add(itineraryActivityField, 1, 0);
+        grid.add(new Label("Location:"), 0, 1);
+        grid.add(itineraryLocationField, 1, 1);
+        grid.add(new Label("Date (YYYY-MM-DD):"), 0, 2);
+        grid.add(itineraryDateField, 1, 2);
+        grid.add(new Label("Time (HH:MM):"), 0, 3);
+        grid.add(itineraryTimeField, 1, 3);
+        grid.add(new Label("Duration (hours):"), 0, 4);
+        grid.add(itineraryDurationField, 1, 4);
+        grid.add(new Label("Notes:"), 0, 5);
+        grid.add(itineraryNotesField, 1, 5);
+
+        // Submit button
+        Button submitButton = new Button("Create Itinerary");
+        submitButton.setOnAction(e -> handleCreateItinerary());
+        grid.add(submitButton, 1, 6);
+
+        return grid;
+    }
+
+    private void handleCreateUser() {
+        String name = nameField.getText();
+        String email = emailField.getText();
+        String password = passwordField.getText();
+        String phoneNumber = phoneNumberField.getText();
+        String profilePicture = profilePictureField.getText();
+
+        User user = new User();
+        user.setName(name);
+        user.setEmail(email);
+        user.setPassword(password);
+        user.setPhoneNumber(phoneNumber);
+        user.setProfilePicture(profilePicture);
+
+        // Display success message
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("User Created");
+        alert.setHeaderText(null);
+        alert.setContentText("User " + user.getName() + " created successfully!");
+        alert.showAndWait();
+    }
+
+    private void handleCreateTrip() {
+        String destination = destinationField.getText();
+        Date startDate = Date.from(java.time.LocalDate.parse(startDateField.getText()).atStartOfDay(java.time.ZoneId.systemDefault()).toInstant());
+        Date endDate = Date.from(java.time.LocalDate.parse(endDateField.getText()).atStartOfDay(java.time.ZoneId.systemDefault()).toInstant());
+        double budget = Double.parseDouble(budgetField.getText());
+
+        Trip trip = new Trip();
+        trip.setDestination(destination);
+        trip.setStartDate(startDate);
+        trip.setEndDate(endDate);
+        trip.setBudget(budget);
+
+        // Display trip details
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("Trip Created");
+        alert.setHeaderText(null);
+        alert.setContentText("Trip to " + trip.getDestination() + " created successfully!");
+        alert.showAndWait();
+    }
+
+    private void handleCreateItinerary() {
+        String activity = itineraryActivityField.getText();
+        String location = itineraryLocationField.getText();
+        Date date = Date.from(java.time.LocalDate.parse(itineraryDateField.getText()).atStartOfDay(java.time.ZoneId.systemDefault()).toInstant());
+        Date time = Date.from(java.time.LocalTime.parse(itineraryTimeField.getText()).atDate(java.time.LocalDate.now()).atZone(java.time.ZoneId.systemDefault()).toInstant());
+        double duration = Double.parseDouble(itineraryDurationField.getText());
+        String notes = itineraryNotesField.getText();
+
+        Itinerary itinerary = new Itinerary();
+        itinerary.setActivity(activity);
+        itinerary.setLocation(location);
+        itinerary.setDate(date);
+        itinerary.setTime(time);
+        itinerary.setDuration(duration);
+        itinerary.setNotes(notes);
+
+        // Display success message
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("Itinerary Created");
+        alert.setHeaderText(null);
+        alert.setContentText("Itinerary for " + itinerary.getActivity() + " created successfully!");
+        alert.showAndWait();
+    }
+
+    public class User {
+        private int userId;
+        private String name;
+        private String email;
+        private String password;
+        private String phoneNumber;
+        private String profilePicture;
+        private List<Trip> trips;
+        private Date createdAt;
+        private Date updatedAt;
+
+        // Getters and Setters
+        public int getUserId() {
+            return userId;
+        }
+
+        public String getName() {
+            return name;
+        }
+
+        public void setName(String name) {
+            this.name = name;
+        }
+
+        public String getEmail() {
+            return email;
+        }
+
+        public void setEmail(String email) {
+            this.email = email;
+        }
+
+        public String getPassword() {
+            return password;
+        }
+
+        public void setPassword(String password) {
+            this.password = password;
+        }
+
+        public String getPhoneNumber() {
+            return phoneNumber;
+        }
+
+        public void setPhoneNumber(String phoneNumber) {
+            this.phoneNumber = phoneNumber;
+        }
+
+        public String getProfilePicture() {
+            return profilePicture;
+        }
+
+        public void setProfilePicture(String profilePicture) {
+            this.profilePicture = profilePicture;
+        }
+
+        public List<Trip> getTrips() {
+            return trips;
+        }
+
+        public void setTrips(List<Trip> trips) {
+            this.trips = trips;
+        }
+
+        public Date getCreatedAt() {
+            return createdAt;
+        }
+
+        public Date getUpdatedAt() {
+            return updatedAt;
+        }
+    }
+
+    public class Trip {
+        private int tripId;
+        private String destination;
+        private Date startDate;
+        private Date endDate;
+        private double budget;
+        private List<String> activities;
+        private List<String> accommodations;
+        private String notes;
+        private Date createdAt;
+        private Date updatedAt;
+
+        // Getters and Setters
+        public int getTripId() {
+            return tripId;
+        }
+
+        public String getDestination() {
+            return destination;
+        }
+
+        public void setDestination(String destination) {
+            this.destination = destination;
+        }
+
+        public Date getStartDate() {
+            return startDate;
+        }
+
+        public void setStartDate(Date startDate) {
+            this.startDate = startDate;
+        }
+
+        public Date getEndDate() {
+            return endDate;
+        }
+
+        public void setEndDate(Date endDate) {
+            this.endDate = endDate;
+        }
+
+        public double getBudget() {
+            return budget;
+        }
+
+        public void setBudget(double budget) {
+            this.budget = budget;
+        }
+
+        public List<String> getActivities() {
+            return activities;
+        }
+
+        public void setActivities(List<String> activities) {
+            this.activities = activities;
+        }
+
+        public List<String> getAccommodations() {
+            return accommodations;
+        }
+
+        public void setAccommodations(List<String> accommodations) {
+            this.accommodations = accommodations;
+        }
+
+        public String getNotes() {
+            return notes;
+        }
+
+        public void setNotes(String notes) {
+            this.notes = notes;
+        }
+
+        public Date getCreatedAt() {
+            return createdAt;
+        }
+
+        public Date getUpdatedAt() {
+            return updatedAt;
+        }
+    }
+
+    public class Itinerary extends Trip {
+        private int itineraryId;
+        private int tripId;
+        private Date date;
+        private Date time;
+        private String activity;
+        private String location;
+        private double duration;
+        private String notes;
+        private Date createdAt;
+        private Date updatedAt;
+
+        // Getters and Setters
+        public int getItineraryId() {
+            return itineraryId;
+        }
+
+        public int getTripId() {
+            return tripId;
+        }
+
+        public void setTripId(int tripId) {
+            this.tripId = tripId;
+        }
+
+        public Date getDate() {
+            return date;
+        }
+
+        public void setDate(Date date) {
+            this.date = date;
+        }
+
+        public Date getTime() {
+            return time;
+        }
+
+        public void setTime(Date time) {
+            this.time = time;
+        }
+
+        public String getActivity() {
+            return activity;
+        }
+
+        public void setActivity(String activity) {
+            this.activity = activity;
+        }
+
+        public String getLocation() {
+            return location;
+        }
+
+        public void setLocation(String location) {
+            this.location = location;
+        }
+
+        public double getDuration() {
+            return duration;
+        }
+
+        public void setDuration(double duration) {
+            this.duration = duration;
+        }
+
+        public String getNotes() {
+            return notes;
+        }
+
+        public void setNotes(String notes) {
+            this.notes = notes;
+        }
+
+        public Date getCreatedAt() {
+            return createdAt;
+        }
+
+        public Date getUpdatedAt() {
+            return updatedAt;
+        }
+    }
+}
