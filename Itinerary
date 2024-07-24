@@ -1,43 +1,45 @@
-import java.util.Date;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 
 public class Itinerary extends Trip {
     private int itineraryId;
-    private int tripId;
-    private Date date;
-    private Date time;
+    private LocalDate date;
+    private LocalTime time;
     private String activity;
     private String location;
     private double duration;
     private String notes;
-    private Date createdAt;
-    private Date updatedAt;
+    private LocalDateTime createdAt;
+    private LocalDateTime updatedAt;
+
+    public Itinerary() {
+        this.createdAt = LocalDateTime.now();
+        this.updatedAt = LocalDateTime.now();
+    }
 
     // Getters and Setters
     public int getItineraryId() {
         return itineraryId;
     }
 
-    public int getTripId() {
-        return tripId;
+    public void setItineraryId(int itineraryId) {
+        this.itineraryId = itineraryId;
     }
 
-    public void setTripId(int tripId) {
-        this.tripId = tripId;
-    }
-
-    public Date getDate() {
+    public LocalDate getDate() {
         return date;
     }
 
-    public void setDate(Date date) {
+    public void setDate(LocalDate date) {
         this.date = date;
     }
 
-    public Date getTime() {
+    public LocalTime getTime() {
         return time;
     }
 
-    public void setTime(Date time) {
+    public void setTime(LocalTime time) {
         this.time = time;
     }
 
@@ -73,11 +75,16 @@ public class Itinerary extends Trip {
         this.notes = notes;
     }
 
-    public Date getCreatedAt() {
+    public LocalDateTime getCreatedAt() {
         return createdAt;
     }
 
-    public Date getUpdatedAt() {
+    public LocalDateTime getUpdatedAt() {
         return updatedAt;
     }
+
+    public void setUpdatedAt(LocalDateTime updatedAt) {
+        this.updatedAt = updatedAt;
+    }
 }
+
