@@ -4,7 +4,10 @@ import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 
-import java.util.Date;
+import java.time.LocalDate;
+import java.time.LocalTime;
+import java.util.ArrayList;
+import java.util.List;
 
 public class VacationPlannerApp extends Application {
 
@@ -132,305 +135,93 @@ public class VacationPlannerApp extends Application {
     }
 
     private void handleCreateUser() {
-        String name = nameField.getText();
-        String email = emailField.getText();
-        String password = passwordField.getText();
-        String phoneNumber = phoneNumberField.getText();
-        String profilePicture = profilePictureField.getText();
+        try {
+            String name = nameField.getText();
+            String email = emailField.getText();
+            String password = passwordField.getText();
+            String phoneNumber = phoneNumberField.getText();
+            String profilePicture = profilePictureField.getText();
 
-        User user = new User();
-        user.setName(name);
-        user.setEmail(email);
-        user.setPassword(password);
-        user.setPhoneNumber(phoneNumber);
-        user.setProfilePicture(profilePicture);
+            User user = new User();
+            user.setName(name);
+            user.setEmail(email);
+            user.setPassword(password);
+            user.setPhoneNumber(phoneNumber);
+            user.setProfilePicture(profilePicture);
 
-        // Display success message
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setTitle("User Created");
-        alert.setHeaderText(null);
-        alert.setContentText("User " + user.getName() + " created successfully!");
-        alert.showAndWait();
+            // Display success message
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("User Created");
+            alert.setHeaderText(null);
+            alert.setContentText("User " + user.getName() + " created successfully!");
+            alert.showAndWait();
+        } catch (Exception e) {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Error");
+            alert.setHeaderText(null);
+            alert.setContentText("Failed to create user: " + e.getMessage());
+            alert.showAndWait();
+        }
     }
 
     private void handleCreateTrip() {
-        String destination = destinationField.getText();
-        Date startDate = Date.from(java.time.LocalDate.parse(startDateField.getText()).atStartOfDay(java.time.ZoneId.systemDefault()).toInstant());
-        Date endDate = Date.from(java.time.LocalDate.parse(endDateField.getText()).atStartOfDay(java.time.ZoneId.systemDefault()).toInstant());
-        double budget = Double.parseDouble(budgetField.getText());
+        try {
+            String destination = destinationField.getText();
+            LocalDate startDate = LocalDate.parse(startDateField.getText());
+            LocalDate endDate = LocalDate.parse(endDateField.getText());
+            double budget = Double.parseDouble(budgetField.getText());
 
-        Trip trip = new Trip();
-        trip.setDestination(destination);
-        trip.setStartDate(startDate);
-        trip.setEndDate(endDate);
-        trip.setBudget(budget);
+            Trip trip = new Trip();
+            trip.setDestination(destination);
+            trip.setStartDate(startDate);
+            trip.setEndDate(endDate);
+            trip.setBudget(budget);
 
-        // Display trip details
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setTitle("Trip Created");
-        alert.setHeaderText(null);
-        alert.setContentText("Trip to " + trip.getDestination() + " created successfully!");
-        alert.showAndWait();
+            // Display trip details
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("Trip Created");
+            alert.setHeaderText(null);
+            alert.setContentText("Trip to " + trip.getDestination() + " created successfully!");
+            alert.showAndWait();
+        } catch (Exception e) {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Error");
+            alert.setHeaderText(null);
+            alert.setContentText("Failed to create trip: " + e.getMessage());
+            alert.showAndWait();
+        }
     }
 
     private void handleCreateItinerary() {
-        String activity = itineraryActivityField.getText();
-        String location = itineraryLocationField.getText();
-        Date date = Date.from(java.time.LocalDate.parse(itineraryDateField.getText()).atStartOfDay(java.time.ZoneId.systemDefault()).toInstant());
-        Date time = Date.from(java.time.LocalTime.parse(itineraryTimeField.getText()).atDate(java.time.LocalDate.now()).atZone(java.time.ZoneId.systemDefault()).toInstant());
-        double duration = Double.parseDouble(itineraryDurationField.getText());
-        String notes = itineraryNotesField.getText();
+        try {
+            String activity = itineraryActivityField.getText();
+            String location = itineraryLocationField.getText();
+            LocalDate date = LocalDate.parse(itineraryDateField.getText());
+            LocalTime time = LocalTime.parse(itineraryTimeField.getText());
+            double duration = Double.parseDouble(itineraryDurationField.getText());
+            String notes = itineraryNotesField.getText();
 
-        Itinerary itinerary = new Itinerary();
-        itinerary.setActivity(activity);
-        itinerary.setLocation(location);
-        itinerary.setDate(date);
-        itinerary.setTime(time);
-        itinerary.setDuration(duration);
-        itinerary.setNotes(notes);
+            Itinerary itinerary = new Itinerary();
+            itinerary.setActivity(activity);
+            itinerary.setLocation(location);
+            itinerary.setDate(date);
+            itinerary.setTime(time);
+            itinerary.setDuration(duration);
+            itinerary.setNotes(notes);
 
-        // Display success message
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setTitle("Itinerary Created");
-        alert.setHeaderText(null);
-        alert.setContentText("Itinerary for " + itinerary.getActivity() + " created successfully!");
-        alert.showAndWait();
-    }
-
-    public class User {
-        private int userId;
-        private String name;
-        private String email;
-        private String password;
-        private String phoneNumber;
-        private String profilePicture;
-        private List<Trip> trips;
-        private Date createdAt;
-        private Date updatedAt;
-
-        // Getters and Setters
-        public int getUserId() {
-            return userId;
-        }
-
-        public String getName() {
-            return name;
-        }
-
-        public void setName(String name) {
-            this.name = name;
-        }
-
-        public String getEmail() {
-            return email;
-        }
-
-        public void setEmail(String email) {
-            this.email = email;
-        }
-
-        public String getPassword() {
-            return password;
-        }
-
-        public void setPassword(String password) {
-            this.password = password;
-        }
-
-        public String getPhoneNumber() {
-            return phoneNumber;
-        }
-
-        public void setPhoneNumber(String phoneNumber) {
-            this.phoneNumber = phoneNumber;
-        }
-
-        public String getProfilePicture() {
-            return profilePicture;
-        }
-
-        public void setProfilePicture(String profilePicture) {
-            this.profilePicture = profilePicture;
-        }
-
-        public List<Trip> getTrips() {
-            return trips;
-        }
-
-        public void setTrips(List<Trip> trips) {
-            this.trips = trips;
-        }
-
-        public Date getCreatedAt() {
-            return createdAt;
-        }
-
-        public Date getUpdatedAt() {
-            return updatedAt;
-        }
-    }
-
-    public class Trip {
-        private int tripId;
-        private String destination;
-        private Date startDate;
-        private Date endDate;
-        private double budget;
-        private List<String> activities;
-        private List<String> accommodations;
-        private String notes;
-        private Date createdAt;
-        private Date updatedAt;
-
-        // Getters and Setters
-        public int getTripId() {
-            return tripId;
-        }
-
-        public String getDestination() {
-            return destination;
-        }
-
-        public void setDestination(String destination) {
-            this.destination = destination;
-        }
-
-        public Date getStartDate() {
-            return startDate;
-        }
-
-        public void setStartDate(Date startDate) {
-            this.startDate = startDate;
-        }
-
-        public Date getEndDate() {
-            return endDate;
-        }
-
-        public void setEndDate(Date endDate) {
-            this.endDate = endDate;
-        }
-
-        public double getBudget() {
-            return budget;
-        }
-
-        public void setBudget(double budget) {
-            this.budget = budget;
-        }
-
-        public List<String> getActivities() {
-            return activities;
-        }
-
-        public void setActivities(List<String> activities) {
-            this.activities = activities;
-        }
-
-        public List<String> getAccommodations() {
-            return accommodations;
-        }
-
-        public void setAccommodations(List<String> accommodations) {
-            this.accommodations = accommodations;
-        }
-
-        public String getNotes() {
-            return notes;
-        }
-
-        public void setNotes(String notes) {
-            this.notes = notes;
-        }
-
-        public Date getCreatedAt() {
-            return createdAt;
-        }
-
-        public Date getUpdatedAt() {
-            return updatedAt;
-        }
-    }
-
-    public class Itinerary extends Trip {
-        private int itineraryId;
-        private int tripId;
-        private Date date;
-        private Date time;
-        private String activity;
-        private String location;
-        private double duration;
-        private String notes;
-        private Date createdAt;
-        private Date updatedAt;
-
-        // Getters and Setters
-        public int getItineraryId() {
-            return itineraryId;
-        }
-
-        public int getTripId() {
-            return tripId;
-        }
-
-        public void setTripId(int tripId) {
-            this.tripId = tripId;
-        }
-
-        public Date getDate() {
-            return date;
-        }
-
-        public void setDate(Date date) {
-            this.date = date;
-        }
-
-        public Date getTime() {
-            return time;
-        }
-
-        public void setTime(Date time) {
-            this.time = time;
-        }
-
-        public String getActivity() {
-            return activity;
-        }
-
-        public void setActivity(String activity) {
-            this.activity = activity;
-        }
-
-        public String getLocation() {
-            return location;
-        }
-
-        public void setLocation(String location) {
-            this.location = location;
-        }
-
-        public double getDuration() {
-            return duration;
-        }
-
-        public void setDuration(double duration) {
-            this.duration = duration;
-        }
-
-        public String getNotes() {
-            return notes;
-        }
-
-        public void setNotes(String notes) {
-            this.notes = notes;
-        }
-
-        public Date getCreatedAt() {
-            return createdAt;
-        }
-
-        public Date getUpdatedAt() {
-            return updatedAt;
+            // Display success message
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("Itinerary Created");
+            alert.setHeaderText(null);
+            alert.setContentText("Itinerary for " + itinerary.getActivity() + " created successfully!");
+            alert.showAndWait();
+        } catch (Exception e) {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Error");
+            alert.setHeaderText(null);
+            alert.setContentText("Failed to create itinerary: " + e.getMessage());
+            alert.showAndWait();
         }
     }
 }
+
